@@ -12,4 +12,4 @@
 1 2
 """
 a,b = map(int,input().split())
-print(1*2)
+print(a*b)
