@@ -23,3 +23,8 @@
 예제 출력 2 
 2
 """
+a,s = map(int, input().split())
+-1000 <= a,s <=1000
+b = 2*s - a
+print(b)
+
