@@ -9,18 +9,13 @@
 # 출력
 # 첫째 줄부터 T개의 줄에 A와 B의 최소공배수를 입력받은 순서대로 한 줄에 하나씩 출력한다.
 
-chance = int(input())
-for i in range(chance):
+num = int(input())
+for i in range(num):
     a,b = map(int,input().split())
-
-# num = int(input())
-# for i in range(num):
-#     a,b = map(int,input().split())
-#     A,B = a,b
-#     while a!=0:
-#         b = b%a
-#         a,b = b,a   
-#         print(a,b)
-#     gcd = b
-#     lcm = A * B //b
-#     print(lcm)
+    c = a*b
+    while a!=0:
+        b = b%a
+        a,b = b,a   
+    gcd = b
+    lcm = c //b
+    print(lcm)
