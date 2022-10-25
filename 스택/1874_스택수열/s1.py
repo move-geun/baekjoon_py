@@ -1,31 +1,24 @@
 import sys
 
 N = int(sys.stdin.readline())
-base = list(int(sys.stdin.readline()) for _ in range(N)) 
 stack = list()
-tmp = list()
 aws = list()
-j = 0
-for i in range(1, N+1):
-    if i != base[j]:
-        stack.append(i)
+real = True
+count = 1
+for _ in range(N):
+    num = int(sys.stdin.readline())
+    while count <= num:
+        stack.append(count)
         aws.append('+')
-
-    elif i == base[j]:
-        aws.append('+')
-        tmp.append(i)
-        j += 1
+        count += 1
+    if stack[-1] == num:
+        stack.pop()
         aws.append('-')
-        while stack and (stack[-1] == base[j]):
-            aws.append('-')
-            tmp.append(base[j])
-            del stack[-1]
-            j += 1
-            if j == N:
-                break
+    else:
+        real = False
 
-if base != tmp:
-    print("No")
+if real == False:
+    print("NO")
 else:
-    for i in range(len(aws)):
-        print(aws[i])
+    for i in aws:
+        print(i)
