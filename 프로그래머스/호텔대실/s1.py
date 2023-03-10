@@ -38,6 +38,9 @@
 
 
 
+# 카드겜
+
+
 def solution(cards1, cards2, goal):
     answer = ''
     one_flag = two_flag = 0
