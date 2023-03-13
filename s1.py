@@ -1,27 +1,39 @@
 # 빙고 찾기
-def tictacto(base,x,y,check,player):
-    if check == 3:
-        return True
+def tictacto(base):
+    tic_O = tic_X = 0
 
-    else:
-        dx = [-1,-1,0,1,1,1,0,-1]
-        dy = [0,1,1,1,0,-1,-1,-1]
+    for i in range(0,3):
+        # row check
+        if base[i][0] == base[i][1] == base[i][2]:
+            if base[i][0] == 'O':
+                tic_O += 1
+            elif base[i][0] == 'X':
+                tic_X += 1
+        # col check
+        elif base[0][i] == base[1][i] == base[2][i]:
+            if base[0][i] == 'O':
+                tic_O += 1
+            elif base[0][i] == 'X':
+                tic_X += 1
+            
+    # diagonal check
+    if base[0][0] == base[1][1] == base[2][2]:
+        if base[0][0] == 'O':
+            tic_O += 1
+        elif base[0][0] == 'X':
+            tic_X += 1
 
-        for i in range(0,8):
-            ni = x + dx[i]
-            nj = y + dy[i]
+    if base[0][2] == base[1][1] == base[2][0]:
+        if base[0][2] == 'O':
+            tic_O += 1
+        elif base[0][2] == 'X':
+            tic_X += 1
 
-            if 0 <= ni <= 2 and 0 <= nj <= 2 and base[ni][nj] == player:
-                tictacto(base,ni,nj,check+1,player)
-            else:
-                break
-    return False
+    return (tic_O,tic_X)
 
 
 def solution(board):
-    answer = -1
     cnt_O = cnt_X = 0
-    x_list = list()
     base = list()
     
     # 2차원 배열로 변경
@@ -32,21 +44,27 @@ def solution(board):
     for i in range(0,3):
         for j in range(0,3):
             if base[i][j] == 'O':
-                cnt_o += 1
+                cnt_O += 1
             if base[i][j] == 'X':
-                cnt_x += 1
-                x_list.append((i,j))
+                cnt_X += 1
+    total = cnt_O + cnt_X
     
     # 일어날 수 없는 상황
-    # 1. x가 더 많은 경우
-    if cnt_x > cnt_o:
-        answer =  0
-    # 2. x가 3인데 o가 빙고
-    elif cnt_x >= 3:
-        tictacto(base,)
-        
-    # 3. x가 4인데 x가 빙고
-        
-    
-    
-    return answer
+    # 1. X가 많거나 O가 2개 이상 차이 날 때
+    if cnt_O < cnt_X or cnt_O - 1 > cnt_X:
+        return 0
+    # 2. 빙고 체크
+    tic_O, tic_X = tictacto(base)
+    # 2-1. O를 마지막으로 게임 끝나는데
+    if total >= 5 and total % 2:
+        # X 빙고가 이미 있을 때
+        if tic_O <= tic_X:
+            return 0
+    # 2-2. X를 마지막으로 게임 끝나는데
+    if total >= 5 and not total % 2:
+        # O 빙고가 이미 있을 때
+        if tic_O >= tic_X:
+            return 0
+
+
+    return 1
