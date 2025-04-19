@@ -7,4 +7,4 @@ for i in range(len(lst)):
     idx = ord(lst[i])-97
     tmp += points[idx]*(31**i)
 
-print(tmp)
+print(tmp%1234567891)
