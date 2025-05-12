@@ -1,26 +1,28 @@
 import sys
 
-N = int(sys.stdin.readline())
-paper = [list(map(int, sys.stdin.readline().split())) for _ in range(N)] 
+input = sys.stdin.readline
 
-result = []
+t = int(input())
+maps = list(list(map(int, input().split(' '))) for _ in range(t))
+answer = [0,0]
 
-def solution(x, y, N) :
-  color = paper[x][y]
-  for i in range(x, x+N) :
-    for j in range(y, y+N) :
-      if color != paper[i][j] :
-        solution(x, y, N//2)
-        solution(x, y+N//2, N//2)
-        solution(x+N//2, y, N//2)
-        solution(x+N//2, y+N//2, N//2)
-        return
-  if color == 0 :
-    result.append(0)
-  else :
-    result.append(1)
+def divide(x,y,n):
+    color = maps[x][y]
+    for i in range(x, x+n):
+        for j in range(y, y+n):
+            if maps[i][j] != color:
+                m = n//2
+                divide(x,y,m)
+                divide(x, y+m, m)
+                divide(x+m, y, m)
+                divide(x+m,y+m,m)
+                return
+    
+    if color:
+        answer[1] += 1
+    else:
+        answer[0] += 1
 
-
-solution(0,0,N)
-print(result.count(0))
-print(result.count(1))
+divide(0,0,t)
+print(answer[0])
+print(answer[1])
