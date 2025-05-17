@@ -2,24 +2,24 @@ import sys
 from collections import deque
 
 input = sys.stdin.readline
-n,m = map(int, input().split())
-maps = [[0]*(m+2)]
+N,M = map(int, input().split(' '))
+maps = [list(map(int, input().strip())) for _ in range(N)]
+n,m = N-1, M-1
+dirs = [[1,0],[-1,0],[0,1],[0,-1]]
 
-for _ in range(n):
-    row = [0] + [int(c) for c in input().strip()] + [0]
-    maps.append(row)
-maps.append([0]*(m+2))
+def bfs(i,j):
+    q = deque([(i,j)])
+    cnt = 2
+    maps[i][j] = cnt
 
-d = [(-1,0),(1,0),(0,-1),(0,1)]
-def bfs(j,i):
-    q = deque([(j,i)])
     while q:
-        y,x = q.popleft()
-        for dj,di in d:
-            ny,nx = y+dj, x+di
-            if 1<=ny<=n and 1<=nx<=m and maps[ny][nx] == 1:
-                maps[ny][nx] = maps[y][x] + 1
-                q.append((ny,nx))
+        x,y = q.popleft()
+        for di,dj in dirs:
+            nx,ny = x+di, y+dj
+            if 0<=nx<N and 0<=ny<M and maps[nx][ny] == 1:
+                maps[nx][ny] = maps[x][y] + 1
+                q.append([nx,ny])
+    
+bfs(0,0)
 
-bfs(1,1)
-print(maps[n][m])
+print(maps[n][m]-1)
