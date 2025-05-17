@@ -3,30 +3,23 @@ from collections import deque
 
 input = sys.stdin.readline
 n,m = map(int, input().split(' '))
-graph = [[] for _ in range(n+1)]
-visited = [False for _ in range(n+1)]
-cnt = 0
+parents = list(range(n+1))
 
+def find(x):
+    if parents[x] != x:
+        parents[x] = find(parents[x])
+    return parents[x]
+
+def union(a,b):
+    ra, rb = find(a), find(b)
+    if ra != rb:
+        parents[rb] = ra
+    
 for _ in range(m):
-    sn,en = map(int, input().split(' '))
-    graph[sn].append(en)
-    graph[en].append(sn)
+    sn, en = map(int, input().split(' '))
+    union(sn,en)
 
-def bfs(v):
-    q = deque([v])
-    visited[v] = True
+for i in range(1,n+1):
+    find(i)
 
-    while q:
-        n = q.popleft()
-        for i in graph[n]:
-            if not visited[i]:
-                q.append(i)
-                visited[i] = True
-    graph[v] = []
-
-for i in range(1, n+1):
-    if not visited[i]:
-        bfs(i)
-        cnt += 1
-
-print(cnt)
+print(len(set(parents[1:])))
