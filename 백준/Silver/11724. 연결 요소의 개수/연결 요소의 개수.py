@@ -1,26 +1,32 @@
 import sys
+from collections import deque
 
 input = sys.stdin.readline
 n,m = map(int, input().split(' '))
-visited = [0]*(n+1)
-maps = [[] for _ in range(n+1)]
-for _ in range(m):
-    st,et = map(int, input().split(' '))
-    maps[st].append(et)
-    maps[et].append(st)
-
+graph = [[] for _ in range(n+1)]
+visited = [False for _ in range(n+1)]
 cnt = 0
-for i in range(1,n+1):
-    if visited[i] == 0:
+
+for _ in range(m):
+    sn,en = map(int, input().split(' '))
+    graph[sn].append(en)
+    graph[en].append(sn)
+
+def bfs(v):
+    q = deque([v])
+    visited[v] = True
+
+    while q:
+        n = q.popleft()
+        for i in graph[n]:
+            if not visited[i]:
+                q.append(i)
+                visited[i] = True
+    graph[v] = []
+
+for i in range(1, n+1):
+    if not visited[i]:
+        bfs(i)
         cnt += 1
-        visited[i] = 1
-        nexts = maps[i]
-        while nexts:
-            next = nexts.pop()
-            if visited[next] == 0:
-                visited[next] = 1
-                items = maps[next]
-                for item in items:
-                    if item not in nexts : nexts.append(item)
 
 print(cnt)
