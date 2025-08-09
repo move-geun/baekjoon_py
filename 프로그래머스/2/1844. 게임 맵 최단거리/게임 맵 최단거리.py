@@ -1,23 +1,29 @@
 from collections import deque
 
 def solution(maps):
+    dirs = [[1,0],[-1,0],[0,1],[0,-1]]
     n,m = len(maps), len(maps[0])
-    dir = [(-1,0),(0,1),(1,0),(0,-1)]
-    visited = [[0 for _ in range(len(maps[0]))] for _ in range(len(maps))]
-    q = deque()
-    q.append([0,0])
-    visited[0][0] = 1
+    visited = [[0]*m for _ in range(n)]
     
-    while q:
-        y,x = q.popleft()
-        for dx,dy in dir:
-            nx,ny = x+dx, y+dy
-            if 0<=nx<m and 0<=ny<n and maps[ny][nx] == 1:
-                if visited[ny][nx] == 0:
-                    maps[ny][nx] = maps[y][x] + 1
-                    visited[ny][nx] = 1
-                    q.append([ny,nx]) 
-    if maps[n-1][m-1] == 1:
+    def bfs(x,y):
+        q = deque()
+        q.append([x,y])
+        visited[x][y] = 1
+        
+        while q:
+            i,j = q.popleft()
+            
+            if i == n and j == m:
+                return 
+            
+            for di,dj in dirs:
+                ni,nj = i+di,j+dj
+                
+                if 0<=ni<n and 0<=nj<m and visited[ni][nj] == 0 and maps[ni][nj] == 1:
+                    q.append([ni,nj])
+                    visited[ni][nj] = visited[i][j] + 1
         return -1
     
-    return maps[n-1][m-1] 
+    ans = bfs(0,0)
+    
+    return visited[n-1][m-1] if visited[n-1][m-1] else -1
